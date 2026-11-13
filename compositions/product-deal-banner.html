@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <title>Product Deal Banner Card (9:16)</title>
+  <style>
+    /* Bank Template 9:16 - Pola C: Kartu Review Produk Alat */
+    :root {
+      --bg: #0d1117;           /* deep graphite dark base, single accent only */
+      --ink: #eef2f6;
+      --muted: #7c8492;
+      --accent: #e6a93d;       /* warm gold — satu aksen sepanjang template */
+      --safe: #ffffff;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { width: 1080px; height: 1920px; background: var(--bg); color: var(--ink);
+                 font-family: Helvetica Neue, Arial, sans-serif; overflow: hidden; }
+
+    /* SAFE CAPTION ZONE — same 9:16 convention as sibling templates */
+    #caption-zone {
+      position: absolute; left: 0; right: 0; bottom: 192px; height: 384px;
+      background: rgba(13,17,23,.92);
+      display: flex; align-items: center; justify-content: center;
+      border-top: 4px solid var(--accent);
+    }
+    #caption-text { width: 90%; font-size: 42px; line-height: 1.3; font-weight: 700;
+                    color: var(--safe); text-align: center; letter-spacing: -.4px; }
+
+    .label { position: absolute; top: 132px; left: 72px; font-size: 24px;
+             letter-spacing: 4px; text-transform: uppercase; color: var(--muted); }
+    #badge {
+      position: absolute; top: 168px; left: 72px;
+      font-size: 28px; font-weight: 900; color: var(--accent);
+    }
+    #hero {
+      position: absolute; top: 220px; left: 50%; transform: translateX(-50%);
+      width: 760px; height: 520px; object-fit: cover; border-radius: 36px;
+      border: 5px solid rgba(230,169,61,.5); background: #1c2128;
+    }
+    #deal-head {
+      position: absolute; top: 800px; left: 96px; right: 96px;
+      font-size: 56px; font-weight: 900; letter-spacing: -2px; line-height: 1.05;
+    }
+    #deal-head span { color: var(--accent); }
+    #price-row {
+      position: absolute; top: 920px; left: 96px; right: 96px;
+      display: flex; gap: 48px; font-size: 44px; font-weight: 800;
+    }
+    #was { color: var(--muted); text-decoration: line-through; }
+    #now { color: var(--accent); }
+    #unit-list {
+      position: absolute; top: 1030px; left: 96px; right: 96px;
+      font-size: 34px; line-height: 1.6;
+    }
+    #unit-list li { list-style: none; color: var(--muted); }
+    #unit-list li strong { color: var(--ink); font-weight: 700; }
+    #order-cta {
+      position: absolute; bottom: 280px; left: 50%; transform: translateX(-50%);
+      width: 680px; height: 146px; background: var(--accent); border: none; border-radius: 30px;
+      color: #0d1117; font-size: 46px; font-weight: 900; letter-spacing: 1px;
+      will-change: transform, opacity;
+    }
+    #footer { position: absolute; top: 70px; left: 0; right: 0; text-align: center;
+              font-size: 22px; letter-spacing: 3px; text-transform: uppercase; color: var(--muted); }
+  </style>
+</head>
+<body>
+  <div id="stage">
+    <div id="footer">Agentika · Affiliate Deals</div>
+    <div class="label">Rekomendasi Produk Terlaris</div>
+    <div id="badge">HOT PICK</div>
+
+    <img id="hero" src="../assets/avatar.jpg" alt="produk unggulan" />
+
+    <div id="deal-head">Harga Promo <span>Sekarang</span></div>
+    <div id="price-row"><span id="was">Rp149.000</span><span id="now">Rp79.000</span></div>
+
+    <ul id="unit-list">
+      <li><strong>Bahan:</strong> premium &amp; halal sertifikasi</li>
+      <li><strong>Pengiriman:</strong> ongkir seluruh pulau gratis</li>
+      <li><strong>Garansi:</strong> tunai kembali jika tidak puas</li>
+      <li><strong>Bonus:</strong> voucher eksklusif tambahan</li>
+    </ul>
+
+    <button id="order-cta">PESAN SEKARANG</button>
+
+    <div id="caption-zone">
+      <div id="caption-text">Caption penawaran: angka harga -> keunikan produk -> ajakan order di caption safe zone.</div>
+    </div>
+  </div>
+
+  <script>
+    // Render Contract preserved for bank consistency: pure function of t; no Math.random(), no Date.now();
+    // single loop over exactly DURATION frames.
+    const DURATION = 15;
+    function clamp01(x) { return x < 0 ? 0 : x > 1 ? 1 : x; }
+    function easeOutQuint(t){ return 1 - Math.pow(1 - t, 5); }
+    function springDamped(p, damping){
+      return Math.min(1, 1 - Math.exp(-(damping / 0.25) * p));
+    }
+    window.__timelines = window.__timelines || {};
+    window.__timelines["product-deal-banner"] = function(t) {
+      const elHero = document.getElementById("hero");
+      const elDealHead = document.getElementById("deal-head");
+      const elWas = document.getElementById("was");
+      const elNow = document.getElementById("now");
+      const elList = document.getElementById("unit-list");
+      const elCta = document.getElementById("order-cta");
+
+      const hP = clamp01(t / 0.4);
+      elHero.style.opacity = String(easeOutQuint(hP));
+      elHero.style.transform = "translateX(-50%) scale(" + (0.65 + 0.35 * springDamped(hP, 0.8)) + ")";
+
+      const dHeadP = clamp01((t - 0.45) / 0.3);
+      elDealHead.style.opacity = String(dHeadP);
+      elDealHead.style.transform = "translateY(" + ((1 - dHeadP) * 50).toFixed(1) + "px)";
+
+      const wasP = clamp01((t - 0.75) / 0.25);
+      elWas.style.opacity = String(wasP);
+
+      const nowP = clamp01((t - 0.95) / 0.3);
+      elNow.textContent = "Rp" + Math.round(79000 * nowP).toLocaleString("id-ID");
+      elNow.style.opacity = String(nowP);
+
+      const liP = clamp01((t - 1.35) / 0.4);
+      elList.style.opacity = String(liP);
+      elList.style.transform = "translateY(" + ((1 - liP) * 30).toFixed(1) + "px)";
+
+      const cP = clamp01((t - 2.8) / 0.25);
+      elCta.style.opacity = String(cP);
+      elCta.style.transform = "translateX(-50%) scale(" +
+        (0.82 + 0.18 * springDamped(cP, 0.8)).toFixed(3) + ")";
+    };
+  </script>
+</body>
+</html>

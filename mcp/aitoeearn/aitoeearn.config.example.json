@@ -1,0 +1,12 @@
+{
+  "_comment": "Copy to aitoearn.config.local.json OUTSIDE the repo. Never commit this file.",
+  "baseUrl": "https://api.aitoearn.com/v1",   /* TODO: verify against live AiToEarn docs */
+  "defaultPlatforms": ["tiktok", "instagram", "shorts"],
+  "captionTemplates": {
+    "tiktok":      "[hook] {title} | harga {price} di link di profil\n#affiliate #{niche}",
+    "instagram":   "{title}\nHarga: {price}\nLink full review di bio.\n{hashtags}",
+    "youtube-short":"[{title}] Harga finalnya Rp{price}. Beda versi lengkap di deskripsi."
+  },
+  "retryPolicy": { "maxAttempts": 3, "backoffMsBase": 5000 },
+  "logging": { "path": "./logs/post-history.jsonl" }
+}

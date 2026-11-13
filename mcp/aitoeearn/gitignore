@@ -1,0 +1,3 @@
+aitoeearn.config.local.json
+*.pem
+.env

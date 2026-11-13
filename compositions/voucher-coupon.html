@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <title>Voucher Coupon Card (9:16)</title>
+  <style>
+    /* Bank Template 9:16 - Pola B: Kartu Voucher */
+    :root {
+      --bg: #ffffff;
+      --ink: #141416;
+      --muted: #5b606b;
+      --accent: #c73e3e;        /* merah batik solid, tanpa gradasi */
+      --panel: #f4f5f7;
+      --safe: #0e0f12;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { width: 1080px; height: 1920px; background: var(--bg); color: var(--ink);
+                 font-family: Arial, Helvetica, sans-serif; overflow: hidden; }
+
+    /* SAFE CAPTION ZONE identical to affiliate template (bottom 20% clearance) */
+    #caption-zone {
+      position: absolute; left: 0; right: 0; bottom: 192px; height: 384px;
+      background: rgba(255,255,255,.94);
+      display: flex; align-items: center; justify-content: center;
+      border-top: 3px dashed var(--accent);
+    }
+    #caption-text { width: 88%; font-size: 40px; line-height: 1.35; font-weight: 700;
+                    color: var(--safe); text-align: center; letter-spacing: -.3px; }
+
+    .pill { position: absolute; top: 120px; left: 72px; background: var(--accent);
+            color: #fff; font-size: 24px; font-weight: 900; letter-spacing: 3px;
+            text-transform: uppercase; padding: 12px 28px; border-radius: 999px; }
+    #code-wrap {
+      position: absolute; top: 260px; left: 96px; right: 96px;
+      background: var(--ink); border-radius: 26px; padding: 42px 32px;
+      text-align: center;
+    }
+    #discount { font-size: 152px; font-weight: 900; color: #fff; letter-spacing: -8px;
+                line-height: 1; margin: 4px 0 22px; }
+    #subtitle { font-size: 38px; font-weight: 700; color: var(--panel); letter-spacing: -.5px; }
+    #code {
+      display: inline-block; margin-top: 34px; background: var(--accent); color: #fff;
+      font-family: Consolas, monospace; font-size: 56px; font-weight: 900; letter-spacing: 6px;
+      padding: 18px 46px; border-radius: 18px;
+    }
+    #terms { position: absolute; top: 820px; left: 96px; right: 96px;
+             font-size: 30px; color: var(--muted); line-height: 1.45; }
+    #terms span { color: var(--ink); font-weight: 600; }
+    #countdown-badge {
+      position: absolute; top: 620px; left: 50%; transform: translateX(-50%);
+      font-size: 28px; font-weight: 800; color: var(--muted); letter-spacing: 2px;
+    }
+    #cta-copy {
+      position: absolute; bottom: 280px; left: 50%; transform: translateX(-50%);
+      width: 720px; height: 148px; background: var(--accent); border: none; border-radius: 32px;
+      color: #fff; font-size: 48px; font-weight: 900; letter-spacing: 1px;
+      will-change: transform, opacity;
+    }
+    #brandline { position: absolute; top: 80px; left: 0; right: 0; text-align: center;
+                 font-size: 24px; letter-spacing: 4px; text-transform: uppercase;
+                 color: var(--muted); }
+  </style>
+</head>
+<body>
+  <div id="stage">
+    <div id="brandline">Agentika · Affiliate Promo</div>
+    <div class="pill">Diskon Spesial</div>
+
+    <div id="code-wrap">
+      <div id="discount">50%</div>
+      <div id="subtitle">Hemat sepanjang Hari</div>
+      <div id="code">VOUCHER500</div>
+    </div>
+
+    <div id="countdown-badge">BERLAKU SAMPAI TANGGAL XXXX</div>
+
+    <div id="terms"><span>• Min. belanja Rp250.000</span> &middot; Tidak bisa digabung lain promo<br/>
+                      <span>• Masa berlaku:</span> hingga besok Jumat</div>
+
+    <button id="cta-copy">SALIN KODE</button>
+
+    <div id="caption-zone">
+      <div id="caption-text">Caption promo: niat penjual -> bukti keuntungan -> link di profil.</div>
+    </div>
+  </div>
+
+  <script>
+    // Render Contract: every pixel is a pure function of t (seconds), loop == DURATION,
+    // frame N renders exactly once, no wall clock or Math.random().
+    const DURATION = 12;
+    function clamp01(x) { return x < 0 ? 0 : x > 1 ? 1 : x; }
+    function easeOutQuint(t){ return 1 - Math.pow(1 - t, 5); }
+    function springDamped(p, damping){
+      return Math.min(1, 1 - Math.exp(-(damping / 0.25) * p));
+    }
+    window.__timelines = window.__timelines || {};
+    window.__timelines["voucher-coupon"] = function(t) {
+      const elDisc = document.getElementById("discount");
+      const elCode = document.getElementById("code");
+      const elTerms = document.getElementById("terms");
+      const elBadge = document.getElementById("countdown-badge");
+      const elCta = document.getElementById("cta-copy");
+
+      const dP = clamp01((t - 0.15) / 0.35);
+      elDisc.textContent = Math.round(100 * dP).toString() + "%";
+      elDisc.style.opacity = String(easeOutQuint(dP));
+      elDisc.style.transform = "scale(" + (0.55 + 0.45 * springDamped(dP, 0.8)) + ")";
+
+      const cP = clamp01((t - 0.65) / 0.3);
+      elCode.style.opacity = String(cP);
+      elCode.style.transform = "translateY(" + ((1 - cP) * 40).toFixed(1) + "px)";
+
+      const tP = clamp01((t - 1.05) / 0.4);
+      elTerms.style.opacity = String(tP);
+
+      const bP = clamp01((t - 0.2) / 0.3);
+      elBadge.style.opacity = String(bP);
+
+      const cC = clamp01((t - 2.4) / 0.25);
+      elCta.style.opacity = String(cC);
+      elCta.style.transform = "translateX(-50%) scale(" +
+        (0.8 + 0.2 * springDamped(cC, 0.8)).toFixed(3) + ")";
+
+      if (t >= DURATION - 3) {
+        const pulse = 0.9 + 0.1 * Math.sin(((t - (DURATION - 3)) / 0.7) * Math.PI * 2);
+        elCta.style.filter = "brightness(" + pulse.toFixed(3) + ")";
+      }
+    };
+  </script>
+</body>
+</html>

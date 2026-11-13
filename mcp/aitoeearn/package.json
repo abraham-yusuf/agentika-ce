@@ -1,0 +1,6 @@
+{
+  "name": "agentika-aitoearn-connector",
+  "version": "0.1.0",
+  "description": "Local MCP bridge: Agentika content engine <-> AiToEarn multi-platform publish (design locked in docs/dothis.md F1-F4)",
+  "license": "MIT"
+}
